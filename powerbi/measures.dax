@@ -1,0 +1,149 @@
+// =============================================================================
+//  Store opening model - DAX measures
+//  Data model (star schema, all relationships many-to-one, single direction):
+//      fact_monthly[date]         -> dim_date[date]
+//      fact_monthly[scenario_key] -> dim_scenario[scenario_key]
+//      fact_monthly[metric_key]   -> dim_metric[metric_key]
+//  fact_monthly is in long format: one row per month x scenario x metric.
+//  Sign convention (same as the Excel model): costs and outflows are negative.
+//  Create the measures in a "_Measures" table; display folders are suggested
+//  in brackets.
+// =============================================================================
+
+
+// [Helpers] Base measure: sum of fact values in the current filter context.
+// Every other measure picks a metric with CALCULATE on top of this one.
+Metric Value =
+SUM ( fact_monthly[value] )
+
+
+// [P&L] Net sales, USD excl. VAT.
+Revenue =
+CALCULATE ( [Metric Value], dim_metric[metric_key] = "revenue" )
+
+
+// [P&L] Earnings before interest, tax, depreciation and amortisation.
+EBITDA =
+CALCULATE ( [Metric Value], dim_metric[metric_key] = "ebitda" )
+
+
+// [P&L] EBITDA as a share of revenue. DIVIDE returns blank instead of an
+// error in the pre-opening month, when revenue is zero.
+EBITDA % =
+DIVIDE ( [EBITDA], [Revenue] )
+
+
+// [P&L] Profit after depreciation and income tax (tax losses carried forward).
+Net Profit =
+CALCULATE ( [Metric Value], dim_metric[metric_key] = "net_profit" )
+
+
+// [Cash flow] Free cash flow including the inventory and deposit recovered at
+// the end of the horizon. This is the series used for NPV and IRR.
+Free Cash Flow =
+CALCULATE ( [Metric Value], dim_metric[metric_key] = "fcf" )
+
+
+// [Cash flow] Running total of free cash flow BEFORE the horizon-end recovery,
+// from the investment month up to the last date in context. Put dim_date[date]
+// on the axis and scenario in the legend to get the payback chart.
+// The recovery is excluded so that a store is not shown as "paid back" only
+// because its stock is sold off at the end.
+Cumulative Cash Flow =
+VAR _lastDate = MAX ( dim_date[date] )
+RETURN
+    CALCULATE (
+        [Metric Value],
+        dim_metric[metric_key] = "fcf_op",
+        FILTER ( ALL ( dim_date ), dim_date[date] <= _lastDate )
+    )
+
+
+// [Returns] Months from opening until cumulative cash flow (before recovery)
+// turns positive, interpolated inside the crossing month:
+//     payback = p - C(p) / (C(p) - C(p-1))
+// where p is the first month with C(p) >= 0. Ignores date filters; needs one
+// scenario in context. Blank = not paid back within the horizon.
+// Matches Summary!Payback period in the Excel model.
+Payback Months =
+VAR _cumulative =
+    ADDCOLUMNS (
+        ALL ( dim_date[model_month] ),
+        "@cum",
+            VAR _m = dim_date[model_month]
+            RETURN
+                CALCULATE (
+                    [Metric Value],
+                    dim_metric[metric_key] = "fcf_op",
+                    FILTER ( ALL ( dim_date ), dim_date[model_month] <= _m )
+                )
+    )
+VAR _p =
+    MINX ( FILTER ( _cumulative, dim_date[model_month] >= 1 && [@cum] >= 0 ), dim_date[model_month] )
+VAR _cumP = MAXX ( FILTER ( _cumulative, dim_date[model_month] = _p ), [@cum] )
+VAR _cumPrev = MAXX ( FILTER ( _cumulative, dim_date[model_month] = _p - 1 ), [@cum] )
+RETURN
+    IF (
+        HASONEVALUE ( dim_scenario[scenario_key] ) && NOT ISBLANK ( _p ),
+        _p - DIVIDE ( _cumP, _cumP - _cumPrev )
+    )
+
+
+// [Returns] Net present value of the whole horizon at the scenario's annual
+// discount rate. Month m is discounted by (1 + r) ^ (m / 12), which equals the
+// monthly-rate discounting in Excel. Ignores date filters; needs one scenario.
+// Matches Summary!NPV in the Excel model.
+NPV =
+VAR _rate = SELECTEDVALUE ( dim_scenario[discount_rate_annual] )
+RETURN
+    IF (
+        HASONEVALUE ( dim_scenario[scenario_key] ),
+        SUMX (
+            ALL ( dim_date ),
+            DIVIDE (
+                CALCULATE ( [Metric Value], dim_metric[metric_key] = "fcf" ),
+                ( 1 + _rate ) ^ ( dim_date[model_month] / 12 )
+            )
+        )
+    )
+
+
+// [Break-even] Average monthly revenue at which EBITDA = 0 in the selected
+// trading months:
+//     fixed costs per month / contribution margin %
+// Contribution margin = revenue less COGS, shrinkage and card acquiring
+// (all revenue-linked). Fixed costs = rent, payroll, utilities, marketing, other.
+// Note: month 1 includes the one-off launch campaign, so select a full model
+// year (e.g. Year 2) for a "steady-state" figure.
+Break-even Revenue =
+VAR _tradingMonths =
+    CALCULATE ( COUNTROWS ( dim_date ), dim_date[model_month] >= 1 )
+VAR _contribution =
+    CALCULATE (
+        [Metric Value],
+        dim_metric[metric_key] IN { "revenue", "cogs", "shrinkage", "acquiring" }
+    )
+VAR _fixedCosts =
+    - CALCULATE (
+        [Metric Value],
+        dim_metric[metric_key] IN { "rent", "payroll", "utilities", "marketing", "other" }
+    )
+VAR _cmPct = DIVIDE ( _contribution, [Revenue] )
+RETURN
+    DIVIDE ( DIVIDE ( _fixedCosts, _tradingMonths ), _cmPct )
+
+
+// [Break-even] Visitors per day needed to reach break-even revenue:
+//     break-even revenue / revenue per visitor / days per month
+// Revenue per visitor = conversion x average ticket, taken from the data
+// (revenue / visitors) so it follows the scenario and ticket growth.
+Break-even Traffic =
+VAR _visitors =
+    CALCULATE ( [Metric Value], dim_metric[metric_key] = "visitors" )
+VAR _revenuePerVisitor = DIVIDE ( [Revenue], _visitors )
+VAR _tradingMonths =
+    CALCULATE ( COUNTROWS ( dim_date ), dim_date[model_month] >= 1 )
+VAR _avgDays =
+    DIVIDE ( CALCULATE ( SUM ( dim_date[days_in_month] ), dim_date[model_month] >= 1 ), _tradingMonths )
+RETURN
+    DIVIDE ( DIVIDE ( [Break-even Revenue], _revenuePerVisitor ), _avgDays )

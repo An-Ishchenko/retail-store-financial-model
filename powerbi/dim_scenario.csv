@@ -1,0 +1,4 @@
+scenario_key,scenario_name,sort_order,traffic_plan,conversion,avg_ticket,gross_margin,rent_rate,total_investment,peak_funding,payback_months,npv,irr_annual,break_even_traffic,discount_rate_annual
+pessimistic,Pessimistic,1,430,0.23,14,0.36,17,113500,129439.862896,,-51589.617919,-0.041093,375.17605,0.2
+base,Base,2,500,0.25,15,0.38,16,113000,119296.65875,19.955247,93179.100111,0.70562,297.800338,0.2
+optimistic,Optimistic,3,560,0.26,16,0.39,15,112500,115286.593933,12.106515,225375.972234,1.603146,255.667975,0.2

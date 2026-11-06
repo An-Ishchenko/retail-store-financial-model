@@ -1,0 +1,85 @@
+scenario_key,driver,driver_order,shock,npv,npv_change
+pessimistic,Traffic,1,-0.2,-127008.33,-75418.71
+pessimistic,Traffic,1,-0.1,-88391.38,-36801.77
+pessimistic,Traffic,1,0.1,-19330.48,32259.14
+pessimistic,Traffic,1,0.2,12556.12,64145.74
+pessimistic,Conversion,2,-0.2,-127008.33,-75418.71
+pessimistic,Conversion,2,-0.1,-88391.38,-36801.77
+pessimistic,Conversion,2,0.1,-19330.48,32259.14
+pessimistic,Conversion,2,0.2,12556.12,64145.74
+pessimistic,Average ticket,3,-0.2,-127008.33,-75418.71
+pessimistic,Average ticket,3,-0.1,-88391.38,-36801.77
+pessimistic,Average ticket,3,0.1,-19330.48,32259.14
+pessimistic,Average ticket,3,0.2,12556.12,64145.74
+pessimistic,Gross margin,4,-0.2,-132871.27,-81281.66
+pessimistic,Gross margin,4,-0.1,-91322.86,-39733.24
+pessimistic,Gross margin,4,0.1,-16907.67,34681.94
+pessimistic,Gross margin,4,0.2,17374.78,68964.4
+pessimistic,Rent,5,-0.2,-30484.68,21104.94
+pessimistic,Rent,5,-0.1,-40991.65,10597.97
+pessimistic,Rent,5,0.1,-62359.73,-10770.11
+pessimistic,Rent,5,0.2,-74714.33,-23124.71
+pessimistic,Payroll,6,-0.2,-23898.18,27691.44
+pessimistic,Payroll,6,-0.1,-37649.21,13940.41
+pessimistic,Payroll,6,0.1,-66289.29,-14699.68
+pessimistic,Payroll,6,0.2,-82804.15,-31214.53
+pessimistic,Fit-out & equipment,7,-0.2,-41359.97,10229.64
+pessimistic,Fit-out & equipment,7,-0.1,-46473.3,5116.32
+pessimistic,Fit-out & equipment,7,0.1,-56707.39,-5117.77
+pessimistic,Fit-out & equipment,7,0.2,-61835.93,-10246.31
+base,Traffic,1,-0.2,2123.57,-91055.53
+base,Traffic,1,-0.1,47688.94,-45490.16
+base,Traffic,1,0.1,138646.0,45466.9
+base,Traffic,1,0.2,184100.32,90921.22
+base,Conversion,2,-0.2,2123.57,-91055.53
+base,Conversion,2,-0.1,47688.94,-45490.16
+base,Conversion,2,0.1,138646.0,45466.9
+base,Conversion,2,0.2,184100.32,90921.22
+base,Average ticket,3,-0.2,2123.57,-91055.53
+base,Average ticket,3,-0.1,47688.94,-45490.16
+base,Average ticket,3,0.1,138646.0,45466.9
+base,Average ticket,3,0.2,184100.32,90921.22
+base,Gross margin,4,-0.2,-4432.6,-97611.7
+base,Gross margin,4,-0.1,44429.28,-48749.82
+base,Gross margin,4,0.1,141901.89,48722.79
+base,Gross margin,4,0.2,190612.11,97433.01
+base,Rent,5,-0.2,112563.17,19384.07
+base,Rent,5,-0.1,102872.35,9693.25
+base,Rent,5,0.1,83484.19,-9694.91
+base,Rent,5,0.2,73787.15,-19391.95
+base,Payroll,6,-0.2,120284.12,27105.02
+base,Payroll,6,-0.1,106732.83,13553.73
+base,Payroll,6,0.1,79621.89,-13557.21
+base,Payroll,6,0.2,66058.03,-27121.07
+base,Fit-out & equipment,7,-0.2,103275.74,10096.64
+base,Fit-out & equipment,7,-0.1,98227.42,5048.32
+base,Fit-out & equipment,7,0.1,88130.78,-5048.32
+base,Fit-out & equipment,7,0.2,83082.46,-10096.64
+optimistic,Traffic,1,-0.2,109237.49,-116138.48
+optimistic,Traffic,1,-0.1,167310.86,-58065.11
+optimistic,Traffic,1,0.1,283434.97,58059.0
+optimistic,Traffic,1,0.2,341493.97,116118.0
+optimistic,Conversion,2,-0.2,109237.49,-116138.48
+optimistic,Conversion,2,-0.1,167310.86,-58065.11
+optimistic,Conversion,2,0.1,283434.97,58059.0
+optimistic,Conversion,2,0.2,341493.97,116118.0
+optimistic,Average ticket,3,-0.2,109237.49,-116138.48
+optimistic,Average ticket,3,-0.1,167310.86,-58065.11
+optimistic,Average ticket,3,0.1,283434.97,58059.0
+optimistic,Average ticket,3,0.2,341493.97,116118.0
+optimistic,Gross margin,4,-0.2,101145.01,-124230.96
+optimistic,Gross margin,4,-0.1,163265.57,-62110.41
+optimistic,Gross margin,4,0.1,287479.67,62103.7
+optimistic,Gross margin,4,0.2,349583.38,124207.4
+optimistic,Rent,5,-0.2,243536.47,18160.5
+optimistic,Rent,5,-0.1,234456.22,9080.25
+optimistic,Rent,5,0.1,216295.72,-9080.25
+optimistic,Rent,5,0.2,207213.92,-18162.05
+optimistic,Payroll,6,-0.2,252463.43,27087.46
+optimistic,Payroll,6,-0.1,238919.7,13543.73
+optimistic,Payroll,6,0.1,211831.59,-13544.38
+optimistic,Payroll,6,0.2,198284.81,-27091.16
+optimistic,Fit-out & equipment,7,-0.2,235468.35,10092.37
+optimistic,Fit-out & equipment,7,-0.1,230422.16,5046.19
+optimistic,Fit-out & equipment,7,0.1,220329.79,-5046.19
+optimistic,Fit-out & equipment,7,0.2,215283.6,-10092.37

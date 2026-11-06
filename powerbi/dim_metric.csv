@@ -1,0 +1,27 @@
+metric_key,metric_name,category,unit,sort_order
+visitors,Visitors,Operations,visitors,1
+receipts,Receipts,Operations,receipts,2
+revenue,Revenue,P&L,USD,3
+cogs,Cost of goods sold,P&L,USD,4
+gross_profit,Gross profit,P&L,USD,5
+shrinkage,Shrinkage & write-offs,P&L,USD,6
+gp_net,Gross profit after shrinkage,P&L,USD,7
+rent,Rent,OPEX,USD,8
+payroll,Payroll incl. taxes,OPEX,USD,9
+utilities,Utilities,OPEX,USD,10
+marketing,Marketing,OPEX,USD,11
+acquiring,Card acquiring,OPEX,USD,12
+other,Other OPEX,OPEX,USD,13
+opex,Total OPEX,P&L,USD,14
+ebitda,EBITDA,P&L,USD,15
+da,Depreciation,P&L,USD,16
+ebt,Profit before tax,P&L,USD,17
+tax,Income tax,P&L,USD,18
+net_profit,Net profit,P&L,USD,19
+capex_fe,Fit-out & equipment,Cash flow,USD,20
+capex_inv,Initial inventory,Cash flow,USD,21
+deposit,Rent deposit,Cash flow,USD,22
+fcf_op,Free cash flow before horizon-end recovery,Cash flow,USD,23
+rec_inv,Inventory recovered at horizon end,Cash flow,USD,24
+rec_dep,Deposit returned at horizon end,Cash flow,USD,25
+fcf,Free cash flow,Cash flow,USD,26
